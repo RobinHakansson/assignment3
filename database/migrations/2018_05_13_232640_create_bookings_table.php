@@ -19,7 +19,7 @@ class CreateBookingsTable extends Migration
             $table->integer('room_id');
             $table->date('check_in');
             $table->date('check_out');
-            $table->float('price');
+            $table->double('price', 8, 2);
             $table->timestamps();
         });
     }
