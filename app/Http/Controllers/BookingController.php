@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Booking;
+use App\Room;
+use App\Guest;
+
 class BookingController extends Controller
 {
     /**
@@ -27,7 +31,10 @@ class BookingController extends Controller
     */
     public function create()
     {
-        return view("bookings.create");
+        return view("bookings.create", [
+            "rooms" => Room::All(),
+            "guests" => Guest::All()
+        ]);
     }
 
     /**
@@ -40,16 +47,19 @@ class BookingController extends Controller
     {
         try {
             $booking = new Booking;
-            $booking->title = $request->title;
+            $booking->check_in = $request->check_in;
+            $booking->check_out = $request->check_out;
             $booking->price = $request->price;
+            $booking->room_id = $request->room_id;
+            $booking->guest_id = $request->guest_id;
             $booking->save();
         }
         catch(\Exception $e) {
             return redirect()->route('bookings.index');
         }
 
-        // return redirect()->route('bookings.show', ['id' => $booking->id]);
-        return redirect()->route('bookings.index');
+        return redirect()->route('bookings.show', ['id' => $booking->id]);
+        // return redirect()->route('bookings.index');
     }
 
     /**
@@ -75,8 +85,12 @@ class BookingController extends Controller
     public function edit($id)
     {
         $booking = Booking::find($id);
+        $rooms = Room::all();
+        $guests = Guest::all();
         return view("bookings.edit", [
-            "booking" => $booking
+            "booking" => $booking,
+            "rooms" => $rooms,
+            "guests" => $guests
         ]);
     }
 
@@ -89,10 +103,18 @@ class BookingController extends Controller
     */
     public function update(Request $request, $id)
     {
-        $booking = Booking::find($id);
-        $booking->title = $request->title;
-        $booking->price = $request->price;
-        $booking->save();
+        try {
+            $booking = Booking::find($id);
+            $booking->check_in = $request->check_in;
+            $booking->check_out = $request->check_out;
+            $booking->price = $request->price;
+            $booking->room_id = $request->room_id;
+            $booking->guest_id = $request->guest_id;
+            $booking->save();
+        }
+        catch(\Exception $e) {
+            return redirect()->route('bookings.index');
+        }
 
         return redirect()->route('bookings.show', ['id' => $id]);
     }

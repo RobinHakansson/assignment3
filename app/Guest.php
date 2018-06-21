@@ -8,6 +8,6 @@ class Guest extends Model
 {
     public function bookings()
     {
-        return $this->hasOne('App\Booking');
+        return $this->hasMany('App\Booking');
     }
 }

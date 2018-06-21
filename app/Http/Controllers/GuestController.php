@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Guest;
+
 class GuestController extends Controller
 {
     /**
@@ -40,16 +42,18 @@ class GuestController extends Controller
     {
         try {
             $guest = new Guest;
-            $guest->title = $request->title;
-            $guest->price = $request->price;
+            $guest->first_name = $request->first_name;
+            $guest->last_name = $request->last_name;
+            $guest->email = $request->email;
+            $guest->mobile_phone = $request->mobile_phone;
             $guest->save();
         }
         catch(\Exception $e) {
             return redirect()->route('guests.index');
         }
 
-        // return redirect()->route('guest.show', ['id' => $guest->id]);
-        return redirect()->route('guests.index');
+        return redirect()->route('guests.show', ['id' => $guest->id]);
+        // return redirect()->route('guests.index');
     }
 
     /**
@@ -89,10 +93,17 @@ class GuestController extends Controller
     */
     public function update(Request $request, $id)
     {
-        $guest = Guest::find($id);
-        $guest->title = $request->title;
-        $guest->price = $request->price;
-        $guest->save();
+        try {
+            $guest = Guest::find($id);
+            $guest->first_name = $request->first_name;
+            $guest->last_name = $request->last_name;
+            $guest->email = $request->email;
+            $guest->mobile_phone = $request->mobile_phone;
+            $guest->save();
+        }
+        catch(\Exception $e) {
+            return redirect()->route('guests.index');
+        }
 
         return redirect()->route('guests.show', ['id' => $id]);
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Room;
+
 class RoomController extends Controller
 {
     /**
@@ -14,7 +16,6 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::all();
-
         return view("rooms.index", [
             "rooms" => $rooms
         ]);
@@ -40,16 +41,17 @@ class RoomController extends Controller
     {
         try {
             $room = new Room;
-            $room->title = $request->title;
-            $room->price = $request->price;
+            $room->room_number = $request->room_number;
+            $room->number_of_beds = $request->number_of_beds;
+            $room->description = $request->description;
             $room->save();
         }
         catch(\Exception $e) {
             return redirect()->route('rooms.index');
         }
 
-        // return redirect()->route('rooms.show', ['id' => $room->id]);
-        return redirect()->route('rooms.index');
+        return redirect()->route('rooms.show', ['id' => $room->id]);
+        // return redirect()->route('rooms.index');
     }
 
     /**
@@ -89,10 +91,16 @@ class RoomController extends Controller
     */
     public function update(Request $request, $id)
     {
-        $room = Room::find($id);
-        $room->title = $request->title;
-        $room->price = $request->price;
-        $room->save();
+        try {
+            $room = Room::find($id);
+            $room->room_number = $request->room_number;
+            $room->number_of_beds = $request->number_of_beds;
+            $room->description = $request->description;
+            $room->save();
+        }
+        catch(\Exception $e) {
+            return redirect()->route('rooms.index');
+        }
 
         return redirect()->route('rooms.show', ['id' => $id]);
     }

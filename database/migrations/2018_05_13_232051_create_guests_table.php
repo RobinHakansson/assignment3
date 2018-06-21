@@ -7,17 +7,16 @@ use Illuminate\Database\Migrations\Migration;
 class CreateGuestsTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+    * Run the migrations.
+    *
+    * @return void
+    */
     public function up()
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->boolean('is_female');
             $table->string('mobile_phone');
             $table->string('email');
             $table->timestamps();
@@ -25,10 +24,10 @@ class CreateGuestsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    * Reverse the migrations.
+    *
+    * @return void
+    */
     public function down()
     {
         Schema::dropIfExists('guests');
